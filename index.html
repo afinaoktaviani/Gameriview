@@ -1,189 +1,330 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f6b928">
-<title>Bee Catcher – Gesture Battle</title>
+<title>Tangkap Lebah</title>
 <style>
-:root{--honey:#ffc83d;--orange:#ff8a32;--ink:#26334a;--cream:#fff9e9;--green:#78c98b;--blue:#62b9e9;--purple:#aa8be8}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:linear-gradient(145deg,#fff4c9,#dff7ed 55%,#dff1ff);min-height:100vh}
-button,input,select{font:inherit}button{border:0;border-radius:14px;padding:12px 18px;font-weight:800;cursor:pointer;background:var(--honey);color:#493514;box-shadow:0 4px 0 #d99d20;transition:.15s}button:active{transform:translateY(3px);box-shadow:0 1px 0 #d99d20}button.secondary{background:#e8f3ff;box-shadow:0 4px 0 #a8c9e8;color:#23415c}button.dark{background:#34435d;color:white;box-shadow:0 4px 0 #202c40}button:disabled{opacity:.5;cursor:not-allowed}
-.wrap{max-width:1100px;margin:auto;padding:18px}.hero{background:rgba(255,255,255,.82);border:3px solid white;border-radius:28px;padding:28px;text-align:center;box-shadow:0 14px 35px #64748b22}
-.logo{font-size:clamp(2.7rem,8vw,5.5rem);line-height:1;margin:8px}.eyebrow{font-weight:900;letter-spacing:3px;color:#b8790a}.hero h1{font-size:clamp(2rem,5vw,3.5rem);margin:8px 0}.hero p{max-width:700px;margin:10px auto 20px;line-height:1.6}
-.panel{background:#ffffffdf;border:2px solid white;border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 8px 24px #536b8520}.hidden{display:none!important}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}.field{display:grid;gap:6px;text-align:left;min-width:180px}input,select{padding:11px;border:2px solid #dbe7e8;border-radius:12px;background:white;color:var(--ink);width:100%}
-.small{font-size:.9rem;color:#536277}.credit{font-weight:700;color:#6c7788;margin-top:18px}
-.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.team{border-radius:16px;padding:12px;background:#fff7d9;border:2px solid #f2d47c}.team:nth-child(2){background:#e4f5ff;border-color:#9bd4f2}.team:nth-child(3){background:#e7f8e9;border-color:#a8d9ae}.team:nth-child(4){background:#f0eaff;border-color:#c7b3f3}
-.game-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}.badge{background:#fff1bf;padding:8px 12px;border-radius:999px;font-weight:800}.arena{position:relative;overflow:hidden;min-height:430px;border-radius:24px;border:4px solid white;background:linear-gradient(#9de4fa 0%,#d9f7e5 65%,#91d58d 66%,#6dbd73 100%);box-shadow:inset 0 0 40px #fff8}
-.arena:before{content:"☁️       ☁️              ☁️";position:absolute;inset:20px 0 auto;text-align:center;font-size:35px;opacity:.7;pointer-events:none}
-.flowers{position:absolute;bottom:8px;left:0;right:0;font-size:30px;letter-spacing:12px;text-align:center;opacity:.9;pointer-events:none}
-.question{position:relative;z-index:2;margin:18px auto 0;max-width:760px;background:#ffffffed;border:3px solid #fff;border-radius:18px;padding:14px 18px;text-align:center;box-shadow:0 6px 18px #4562}
-.question .qtext{font-weight:900;font-size:clamp(1rem,2.5vw,1.3rem)}
-.bees{position:relative;z-index:3;display:flex;justify-content:space-evenly;gap:12px;align-items:center;min-height:235px;padding:20px;flex-wrap:wrap}
-.bee{width:clamp(125px,24vw,190px);min-height:135px;border-radius:50% 50% 42% 42%;background:linear-gradient(145deg,#ffe77a,#ffb928);border:5px solid #fff;box-shadow:0 9px 0 #d99b25,0 15px 22px #34435d33;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;user-select:none;animation:float 2s ease-in-out infinite alternate;position:relative;color:#493514}
-.bee:nth-child(2){animation-delay:.6s}.bee:before{content:"";position:absolute;width:55px;height:32px;background:#fff9;border-radius:50%;top:-15px;left:12px;transform:rotate(-25deg)}.bee .face{font-size:38px}.bee .choice{font-size:1.5rem;font-weight:1000}.bee small{font-weight:800}.bee:active{transform:scale(.94)}
-@keyframes float{from{translate:0 0}to{translate:0 -15px}}
-.camera-box{position:absolute;z-index:5;right:10px;bottom:10px;width:min(180px,32%);border:3px solid white;border-radius:16px;overflow:hidden;background:#25354b;box-shadow:0 5px 18px #25354b55}
-.camera-box video{display:block;width:100%;transform:scaleX(-1)}.cam-label{background:#25354b;color:white;text-align:center;font-size:.72rem;padding:4px}
-.pointer{position:absolute;z-index:8;width:26px;height:26px;border:4px solid #fff;border-radius:50%;background:#ff5d5d;box-shadow:0 0 0 5px #ff5d5d55;transform:translate(-50%,-50%);pointer-events:none;display:none}
-.feedback{position:absolute;z-index:9;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(2rem,7vw,4rem);font-weight:1000;text-shadow:0 3px white;pointer-events:none;text-align:center}
-.scoreboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}.score{padding:10px;border-radius:14px;background:white;text-align:center;border:2px solid #e9edf2}.score.active{outline:4px solid var(--honey)}
-.status{text-align:center;font-weight:800;min-height:26px;margin:8px}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:12px 0}.winner{text-align:center;font-size:clamp(1.5rem,5vw,2.5rem);font-weight:1000;color:#a66a00}
-@media(max-width:600px){.wrap{padding:10px}.hero{padding:18px}.panel{padding:13px}.arena{min-height:480px}.bees{min-height:240px;gap:8px}.bee{width:125px;min-height:125px}.camera-box{width:112px}.question{margin:12px 8px 0}.game-top{justify-content:center}}
+:root{--k:#ffd23f;--t:#3b2a1a;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;height:100%;overflow:hidden;font-family:"Trebuchet MS","Comic Sans MS",Arial,sans-serif;color:var(--t);background:#9be7ff}
+#stage{position:fixed;inset:0;background:linear-gradient(#8fe0ff,#d8f5b0 70%,#7ccf5a);overflow:hidden;touch-action:manipulation}
+#cam{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scaleX(-1);opacity:.6;display:none}
+#fl{position:absolute;left:0;right:0;bottom:0;font-size:clamp(34px,7vw,64px);white-space:nowrap;text-align:center;line-height:1;pointer-events:none;overflow:hidden}
+#sun{position:absolute;right:12px;top:120px;font-size:50px;pointer-events:none}
+#mid{position:absolute;left:50%;top:0;bottom:0;border-left:4px dashed rgba(255,255,255,.8);display:none;pointer-events:none}
+.bee{position:absolute;left:0;top:0;width:150px;text-align:center;cursor:pointer;will-change:transform}
+.bee svg{width:110px;height:88px;display:block;margin:0 auto}
+.lb{background:#fff;border:3px solid var(--t);border-radius:14px;padding:4px 8px;font-weight:700;font-size:clamp(14px,2.2vw,19px);line-height:1.15;margin-top:-6px;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.wl{transform-box:fill-box;transform-origin:50% 100%;animation:fl .1s infinite alternate}
+@keyframes fl{from{transform:rotate(-20deg)}to{transform:rotate(14deg)}}
+.shake .in{animation:sk .08s 8}
+@keyframes sk{0%,100%{transform:translateX(10px) rotate(6deg)}50%{transform:translateX(-10px) rotate(-6deg)}}
+.shake .lb{background:#ffcdd2}
+.glow .lb{background:#b9f6ca;border-color:#2e7d32}
+.out{opacity:.25;transition:opacity .4s}
+#hud{position:absolute;top:0;left:0;right:0;display:grid;grid-template-columns:auto 1fr auto;gap:8px;padding:8px;padding-top:calc(8px + env(safe-area-inset-top,0px));align-items:start;pointer-events:none}
+.pl{background:rgba(255,255,255,.9);border-radius:14px;padding:6px 10px;font-weight:800;font-size:clamp(13px,2.3vw,22px);border:3px solid;min-width:90px}
+.p1{border-color:#1e88e5}.p2{border-color:#fb8c00}
+#qc{background:#fff;border:4px solid var(--t);border-radius:18px;padding:8px 14px;text-align:center;font-size:clamp(16px,2.9vw,30px);font-weight:800}
+#qn{font-size:.55em;color:#6d4c41}
+#tb{height:10px;background:#eee;border-radius:6px;margin-top:6px;overflow:hidden}#tf{height:100%;background:#43a047;width:100%}
+#toast{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);background:#fff;border:4px solid var(--t);border-radius:20px;padding:10px 20px;font-size:clamp(18px,3.2vw,32px);font-weight:800;text-align:center;max-width:90%;opacity:0;transition:opacity .25s;pointer-events:none;z-index:4}
+#toast.on{opacity:1}
+.screen{position:absolute;inset:0;background:rgba(255,248,200,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px;overflow:auto;z-index:5}
+.hide{display:none!important}
+h1{font-size:clamp(38px,8vw,78px);margin:0;color:#e65100;text-shadow:3px 3px 0 #fff}
+h2{margin:0;font-size:clamp(22px,4vw,38px)}
+p{margin:2px;font-size:clamp(14px,2.2vw,20px);max-width:640px}
+button{font:inherit;font-weight:800;border:3px solid var(--t);background:#fff;border-radius:16px;padding:10px 18px;font-size:clamp(15px,2.5vw,24px);cursor:pointer;color:var(--t)}
+button.on{background:var(--k)}
+.big{background:#66bb6a;font-size:clamp(22px,4vw,34px);padding:14px 36px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
+#au{position:absolute;bottom:calc(6px + env(safe-area-inset-bottom,0px));left:6px;z-index:9;display:flex;gap:6px;align-items:center;background:rgba(255,255,255,.9);padding:5px 8px;border-radius:14px;flex-wrap:wrap;max-width:96%}
+#au button{padding:3px 10px;font-size:17px;border-radius:10px}
+#au input[type=range]{width:90px}
+.rv{text-align:left;background:#fff;border-radius:14px;padding:8px 14px;max-width:660px;width:100%;font-size:clamp(13px,2vw,18px);max-height:30vh;overflow:auto}
+.st{font-size:clamp(40px,9vw,80px)}
 </style>
 </head>
 <body>
-<div class="wrap">
-<section id="home" class="hero">
- <div class="eyebrow">MEDIA PEMBELAJARAN IPA • KELAS VIII</div>
- <div class="logo">🐝🌼</div><h1>BEE CATCHER</h1><h2>GESTURE BATTLE</h2>
- <p>Tangkap lebah yang membawa jawaban benar! Gerakkan ujung telunjuk di depan kamera menuju lebah pilihanmu. Bermain bergiliran dan kumpulkan poin untuk menjadi tim juara.</p>
- <div class="row"><button id="toRules">MULAI PETUALANGAN</button><button class="secondary" id="soundHome">🔊 Suara ON</button></div>
- <div class="credit">Dikembangkan oleh Afina Mifta Oktaviani, S.Pd<br>Media Pembelajaran Interaktif IPA Kelas VIII</div>
-</section>
+<div id="stage">
+<video id="cam" playsinline muted></video>
+<div id="sun">☀️</div><div id="fl">🌻🌷🌼🌸🌻🌷🌼🌸🌻🌷🌼🌸🌻🌷🌼🌸🌻🌷🌼🌸</div>
+<div id="mid"></div><div id="bees"></div>
+<div id="hud" class="hide">
+ <div class="pl p1" id="h1"></div>
+ <div id="qc"><span id="qn"></span><br><span id="qt"></span><div id="tb"><div id="tf"></div></div></div>
+ <div class="pl p2" id="h2"></div>
+</div>
+<div id="toast"></div>
 
-<section id="rules" class="panel hidden">
- <h2>🌻 Cara Bermain</h2>
- <ol><li>Pilih jumlah kelompok dan masukkan nama tim.</li><li>Izinkan akses kamera. Letakkan HP/laptop dengan posisi stabil.</li><li>Setiap tim bermain sesuai giliran. Arahkan ujung telunjuk ke lebah A atau B.</li><li>Jika kamera tidak tersedia, ketuk lebah atau gunakan mouse.</li><li>Setiap sesi berisi 7 soal acak tanpa pengulangan.</li></ol>
- <p><b>Skor:</b> benar +100 • salah −50 • jawaban benar beruntun +50 • bonus cepat +25.</p>
- <div class="row"><button id="toSetup">LANJUT KE PENGATURAN</button><button class="secondary" id="backHome">KEMBALI</button></div>
-</section>
-
-<section id="setup" class="panel hidden">
- <h2>🏆 Atur Tim Battle</h2>
- <div class="row">
-  <label class="field">Jumlah kelompok<select id="teamCount"><option value="2">2 Kelompok</option><option value="3">3 Kelompok</option><option value="4" selected>4 Kelompok</option></select></label>
- </div>
- <div id="teamInputs" class="team-grid" style="margin:15px 0"></div>
- <div class="row"><button id="startGame">LANJUT & AKTIFKAN KAMERA</button><button class="secondary" id="backRules">KEMBALI</button></div>
-</section>
-
-<section id="play" class="panel hidden">
- <div class="game-top">
-  <span class="badge" id="roundLabel">SOAL 1 / 7</span><span class="badge" id="turnLabel">Giliran: Tim Lebah Kuning</span>
-  <button class="secondary" id="soundGame">🔊 Suara ON</button>
- </div>
- <div id="scores" class="scoreboard"></div>
- <div class="arena" id="arena">
-  <div class="question"><div class="small">🐝 TANGKAP LEBAH DENGAN JAWABAN YANG TEPAT</div><div class="qtext" id="questionText">Pertanyaan akan muncul di sini.</div></div>
-  <div class="bees" id="bees"></div>
-  <div class="flowers">🌷 🌼 🌻 🌸 🌺 🌼 🌷 🌻 🌸</div>
-  <div class="camera-box"><video id="video" autoplay playsinline muted></video><div class="cam-label" id="camLabel">Kamera belum aktif</div></div>
-  <div class="pointer" id="pointer"></div><div class="feedback" id="feedback"></div>
- </div>
- <div class="status" id="status">Pilih jawaban dengan kamera, mouse, atau sentuhan.</div>
- <div class="controls"><button id="enableCam">📷 MULAI KAMERA</button><button class="secondary" id="retryCam">ULANGI KAMERA</button><button class="dark" id="nextQuestion">SOAL BERIKUTNYA ➜</button></div>
- <p class="small" style="text-align:center">Tip: izinkan kamera dan gunakan ujung jari telunjuk. Ketuk lebah jika bermain tanpa kamera.</p>
-</section>
-
-<section id="result" class="panel hidden">
- <div class="logo">🏆🐝🏆</div><h2 style="text-align:center">BATTLE SELESAI!</h2><div class="winner" id="winnerText"></div>
- <h3>📊 Papan Peringkat</h3><div id="finalScores" class="scoreboard"></div>
- <div class="row"><button id="playAgain">MAIN LAGI</button><button class="secondary" id="homeAgain">HALAMAN AWAL</button></div>
-</section>
+<div id="start" class="screen">
+ <h1>🐝 Tangkap Lebah 🐝</h1>
+ <p>Belajar IPA Kelas 8: Tata Surya, Rotasi &amp; Revolusi Bumi, Sel &amp; Sistem Organ, serta Zat Aditif dan Adiktif</p>
+ <p><b>Tingkat kesulitan:</b></p>
+ <div class="row" id="dg"><button data-v="mudah">Mudah</button><button data-v="sedang" class="on">Sedang</button><button data-v="sulit">Sulit</button></div>
+ <p><b>Mode:</b></p>
+ <div class="row" id="mg"><button data-v="1" class="on">1 Pemain</button><button data-v="2">⚔️ Battle 2 Pemain</button></div>
+ <div class="row"><button id="cb" class="on">📷 Kamera: Nyala</button></div>
+ <p>Gerakkan tangan di depan kamera tepat di atas lebah yang membawa jawaban benar. Bisa juga klik/tap lebah. Battle: Pemain 1 di sisi kiri layar, Pemain 2 di sisi kanan.</p>
+ <button class="big" id="go">▶ Mulai</button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-<script>
-"use strict";
-const $=id=>document.getElementById(id);
-const screens=["home","rules","setup","play","result"];
-function show(id){screens.forEach(s=>$(s).classList.toggle("hidden",s!==id));}
-const bank=[
-["Organ utama tempat pertukaran gas pada manusia adalah ...","Paru-paru","Lambung",0],
-["Zat yang membantu proses pencernaan protein di lambung adalah ...","Pepsin","Amilase",0],
-["Planet terbesar dalam tata surya adalah ...","Jupiter","Merkurius",0],
-["Proses tumbuhan membuat makanan dengan bantuan cahaya disebut ...","Fotosintesis","Respirasi",0],
-["Organ yang menyaring darah dan membentuk urine adalah ...","Ginjal","Jantung",0],
-["Pembuluh yang membawa darah keluar dari jantung disebut ...","Arteri","Vena",0],
-["Satuan dasar penyusun makhluk hidup adalah ...","Sel","Organ",0],
-["Perubahan wujud cair menjadi gas disebut ...","Menguap","Membeku",0],
-["Gaya dapat mengubah ...","Gerak dan bentuk benda","Warna semua benda",0],
-["Sumber energi utama bagi bumi adalah ...","Matahari","Bulan",0],
-["Planet yang dikenal sebagai planet merah adalah ...","Mars","Venus",0],
-["Benda langit yang mengelilingi planet disebut ...","Satelit","Asteroid",0],
-["Lapisan atmosfer tempat terjadinya cuaca adalah ...","Troposfer","Termosfer",0],
-["Peristiwa siang dan malam terjadi karena ...","Rotasi bumi","Revolusi bulan",0],
-["Gerak bumi mengelilingi matahari disebut ...","Revolusi","Rotasi",0],
-["Bagian sel yang mengatur seluruh kegiatan sel adalah ...","Inti sel","Membran sel",0],
-["Tempat penyerapan sari makanan paling banyak adalah ...","Usus halus","Kerongkongan",0],
-["Enzim amilase membantu memecah ...","Amilum","Lemak",0],
-["Organ yang memompa darah ke seluruh tubuh adalah ...","Jantung","Paru-paru",0],
-["Zat sisa metabolisme yang dikeluarkan melalui kulit adalah ...","Keringat","Empedu",0],
-["Unit struktural dan fungsional terkecil ginjal adalah ...","Nefron","Neuron",0],
-["Sistem saraf pusat terdiri atas ...","Otak dan sumsum tulang belakang","Jantung dan paru-paru",0],
-["Bagian mata yang mengatur banyaknya cahaya masuk adalah ...","Iris","Retina",0],
-["Tulang berfungsi antara lain untuk ...","Melindungi organ tubuh","Menghasilkan oksigen",0],
-["Zat aditif yang memberi rasa manis disebut ...","Pemanis","Pewarna",0],
-["Kunyit dapat digunakan sebagai pewarna alami ...","Kuning","Biru",0],
-["Pengawet makanan bertujuan untuk ...","Menghambat kerusakan makanan","Menambah ukuran makanan",0],
-["MSG dikenal sebagai bahan tambahan untuk ...","Penyedap rasa","Pengembang roti",0],
-["Contoh pemanis alami adalah ...","Gula tebu","Sakarin",0],
-["Tartrazin merupakan contoh zat ...","Pewarna sintetis","Pengawet alami",0],
-["Zat adiktif dapat menyebabkan ...","Ketergantungan","Fotosintesis",0],
-["Nikotin banyak ditemukan pada ...","Rokok","Susu",0],
-["Alveolus terdapat di dalam ...","Paru-paru","Ginjal",0],
-["Katup jantung berfungsi untuk ...","Mencegah aliran balik darah","Menyaring urine",0],
-["Darah merah mengandung protein ...","Hemoglobin","Keratin",0],
-["Pencernaan mekanik di mulut dibantu oleh ...","Gigi","Ginjal",0],
-["Organ ekskresi yang menghasilkan empedu adalah ...","Hati","Usus besar",0],
-["Bahan yang dapat menghantarkan listrik disebut ...","Konduktor","Isolator",0],
-["Contoh perubahan kimia adalah ...","Besi berkarat","Es mencair",0],
-["Campuran homogen disebut juga ...","Larutan","Suspensi",0],
-["Partikel terkecil penyusun unsur yang masih memiliki sifat unsur adalah ...","Atom","Jaringan",0],
-["Hubungan makan dan dimakan dalam ekosistem disebut ...","Rantai makanan","Siklus air",0],
-["Organisme yang dapat membuat makanan sendiri disebut ...","Produsen","Konsumen",0],
-["Penguapan air dari permukaan bumi dalam siklus air disebut ...","Evaporasi","Kondensasi",0],
-["Gas yang dibutuhkan tumbuhan untuk fotosintesis adalah ...","Karbon dioksida","Oksigen",0],
-["Bunyi tidak dapat merambat melalui ...","Ruang hampa","Air",0],
-["Alat untuk mengukur suhu adalah ...","Termometer","Barometer",0],
-["Perpindahan panas tanpa zat perantara disebut ...","Radiasi","Konduksi",0],
-["Gerhana bulan terjadi ketika ...","Bumi berada di antara matahari dan bulan","Bulan berada di antara matahari dan bumi",0],
-["Salah satu upaya menjaga kesehatan sistem pernapasan adalah ...","Tidak merokok","Sering menghirup asap",0],
-["Vitamin yang dapat dibentuk kulit dengan bantuan sinar matahari adalah ...","Vitamin D","Vitamin C",0]
-];
-// Randomize posisi benar agar A/B seimbang.
-let teams=[],scores=[],turn=0,questions=[],qIndex=0,streak=0,startedAt=0,answered=false;
-let stream=null,hands=null,camLoop=null,cameraOn=false,soundOn=true,lastHit=0;
-let audioCtx=null;
-function beep(freq=660,dur=.13,type="sine",vol=.06){if(!soundOn)return;try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}
-function toggleSound(){soundOn=!soundOn;["soundHome","soundGame"].forEach(id=>$(id).textContent=soundOn?"🔊 Suara ON":"🔇 Suara OFF");if(soundOn)beep(740)}
-$("soundHome").onclick=toggleSound;$("soundGame").onclick=toggleSound;
-function buildInputs(){let n=+$("teamCount").value,defaults=["Tim Lebah Kuning","Tim Lebah Biru","Tim Lebah Hijau","Tim Lebah Ungu"]; $("teamInputs").innerHTML="";for(let i=0;i<n;i++){let d=document.createElement("label");d.className="team field";d.innerHTML=`<b>🐝 Kelompok ${i+1}</b><input maxlength="24" value="${defaults[i]}" aria-label="Nama kelompok ${i+1}">`;$("teamInputs").append(d)}}
-$("teamCount").onchange=buildInputs;buildInputs();
-$("toRules").onclick=()=>show("rules");$("backHome").onclick=()=>show("home");$("toSetup").onclick=()=>{buildInputs();show("setup")};$("backRules").onclick=()=>show("rules");
-$("startGame").onclick=()=>{teams=[...$("teamInputs").querySelectorAll("input")].map((x,i)=>x.value.trim()||`Kelompok ${i+1}`);scores=teams.map(()=>0);turn=0;streak=0;questions=[...bank].sort(()=>Math.random()-.5).slice(0,7).map(q=>{let correct=q[3],opts=[q[1],q[2]];if(Math.random()<.5){opts.reverse();correct=1-correct}return {text:q[0],opts,correct}});qIndex=0;show("play");renderScores();renderQuestion();$("status").textContent="Kamera belum aktif. Anda juga dapat mengetuk lebah untuk menjawab."};
-function renderScores(){$("scores").innerHTML=teams.map((t,i)=>`<div class="score ${i===turn?"active":""}"><b>${escapeHTML(t)}</b><div>⭐ <span>${scores[i]}</span></div></div>`).join("");$("turnLabel").textContent="Giliran: "+teams[turn]}
-function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function renderQuestion(){answered=false;let q=questions[qIndex];$("roundLabel").textContent=`SOAL ${qIndex+1} / 7`;$("questionText").textContent=q.text;$("feedback").textContent="";$("bees").innerHTML=q.opts.map((v,i)=>`<button class="bee" data-choice="${i}" aria-label="Pilih jawaban ${i===0?"A":"B"}"><span class="face">🐝</span><span class="choice">${i===0?"A":"B"}</span><small>${escapeHTML(v)}</small></button>`).join("");[...$("bees").children].forEach(b=>b.addEventListener("click",()=>choose(+b.dataset.choice)));startedAt=Date.now();$("nextQuestion").disabled=true;renderScores()}
-function choose(choice){if(answered)return;answered=true;let q=questions[qIndex],correct=choice===q.correct,elapsed=(Date.now()-startedAt)/1000;let add=0;if(correct){streak++;add=100+(streak>1?50:0)+(elapsed<5?25:0);scores[turn]+=add;$("feedback").textContent="✨ BENAR! +"+add;beep(880,.2,"triangle");setTimeout(()=>beep(1180,.25,"sine"),100);$("status").textContent="Hebat! Jawaban tepat. Lebah berhasil ditangkap!";}else{streak=0;scores[turn]=Math.max(0,scores[turn]-50);$("feedback").textContent="💥 KURANG TEPAT −50";$("status").textContent="Belum tepat. Tetap semangat di soal berikutnya!";beep(180,.35,"sawtooth");}
-[...$("bees").children].forEach((b,i)=>{b.disabled=true;b.style.opacity=i===choice?".35":".75";if(i===q.correct)b.style.outline="5px solid #38b66b"});renderScores();$("nextQuestion").disabled=false;setTimeout(()=>{$("feedback").textContent=""},1300)}
-$("nextQuestion").onclick=()=>{if(!answered)return;if(qIndex<6){qIndex++;turn=(turn+1)%teams.length;renderQuestion()}else finish()};
-function finish(){stopCamera();show("result");let sorted=teams.map((name,i)=>({name,score:scores[i]})).sort((a,b)=>b.score-a.score);$("winnerText").textContent="🎉 Juara: "+sorted[0].name+" 🎉";$("finalScores").innerHTML=sorted.map((t,i)=>`<div class="score"><b>${["🥇","🥈","🥉","🏅"][i]||"⭐"} ${escapeHTML(t.name)}</b><div>${t.score} poin</div></div>`).join("");beep(950,.3,"triangle")}
-$("playAgain").onclick=()=>{$("startGame").click()};$("homeAgain").onclick=()=>{stopCamera();show("home")};
+<div id="end" class="screen hide"></div>
 
-async function startCamera(){
- $("status").textContent="Meminta izin kamera…";
- if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$("status").textContent="Browser tidak mendukung akses kamera. Gunakan HTTPS/localhost atau kontrol sentuh.";return}
- try{
-  stopCamera();
-  stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:"user",width:{ideal:640},height:{ideal:480}}});
-  $("video").srcObject=stream;await $("video").play();cameraOn=true;$("camLabel").textContent="Kamera aktif • arahkan jari";
-  if(typeof Hands==="undefined"){$("status").textContent="Kamera aktif. Pustaka deteksi gesture tidak termuat; gunakan sentuhan atau mouse.";return}
-  hands=new Hands({locateFile:(file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-  hands.setOptions({maxNumHands:1,modelComplexity:0,minDetectionConfidence:.55,minTrackingConfidence:.5});
-  hands.onResults(onHandResults);
-  const process=async()=>{if(!cameraOn)return;if($("video").readyState>=2){try{await hands.send({image:$("video")})}catch(e){}}camLoop=requestAnimationFrame(process)};
-  process();$("status").textContent="Gesture aktif! Gerakkan ujung telunjuk ke lebah.";
- }catch(err){cameraOn=false;$("camLabel").textContent="Kamera tidak aktif";let msg=err.name==="NotAllowedError"?"Izin kamera ditolak. Aktifkan izin kamera untuk situs ini.":err.name==="NotFoundError"?"Kamera tidak ditemukan.":"Kamera gagal dibuka: "+err.message;$("status").textContent=msg+" Gunakan HTTPS dan coba tombol ulangi kamera."}
+<div id="au">
+ <button id="mm" title="Musik">🎵</button><button id="ms" title="Efek suara">🔔</button>
+ <input type="range" id="vo" min="0" max="100" value="70" title="Volume">
+ <button id="pl">Pilih Lagu</button><input type="file" id="fi" accept="audio/*" class="hide">
+</div>
+</div>
+<canvas id="mc" width="64" height="48" class="hide"></canvas>
+
+<script>
+/* ========== PENGATURAN GURU ========== */
+// Isi dengan nama file lagu (mis. "lagu.mp3") untuk mengganti musik buatan
+const LAGU_LATAR_URL = "";
+
+/* ========== BANK SOAL (35 soal) ==========
+ Format: ["Topik", "Pertanyaan", "JAWABAN BENAR|salah 1|salah 2|salah 3"]
+ Jawaban BENAR selalu ditulis PERTAMA; urutan akan diacak otomatis saat bermain. */
+const BANK_RAW = [
+["Tata Surya, Rotasi & Revolusi","Peristiwa yang mendukung teori heliosentris adalah...","Galileo menemukan fase-fase Venus dengan teleskop|Matahari terbit di timur dan terbenam di barat|Bulan mengelilingi Bumi"],
+["Tata Surya, Rotasi & Revolusi","Planet tetap mengelilingi Matahari karena...","Adanya gaya gravitasi Matahari|Planet memiliki cahaya sendiri|Adanya gaya dorong dari Bulan"],
+["Tata Surya, Rotasi & Revolusi","Benda langit yang tidak menghasilkan cahaya sendiri, mengelilingi planet, dan memantulkan cahaya Matahari adalah...","Satelit|Bintang|Planet"],
+["Tata Surya, Rotasi & Revolusi","Planet inferior (orbit di antara Matahari dan orbit Bumi) adalah...","Merkurius dan Venus|Bumi dan Mars|Jupiter dan Saturnus"],
+["Tata Surya, Rotasi & Revolusi","Bukti bahwa Bumi berbentuk bulat adalah...","Kapal yang menjauh dari pantai menghilang mulai dari bagian bawah|Matahari terbit dan tenggelam setiap hari|Bulan mengelilingi Bumi"],
+["Tata Surya, Rotasi & Revolusi","Rotasi Bumi berpengaruh bagi kehidupan manusia karena...","Menyebabkan pergantian siang dan malam|Menyebabkan perubahan bentuk Bulan|Menyebabkan planet memiliki cincin"],
+["Tata Surya, Rotasi & Revolusi","Matahari tampak bergerak dari timur ke barat. Sebenarnya hal itu disebabkan oleh...","Bumi berotasi dari barat ke timur|Matahari mengelilingi Bumi|Bulan berotasi mengelilingi Matahari"],
+["Tata Surya, Rotasi & Revolusi","Pasangan akibat rotasi dan revolusi Bumi yang tepat adalah...","Rotasi: siang-malam; revolusi: pergantian musim|Rotasi: pergantian musim; revolusi: siang-malam|Rotasi: gerhana; revolusi: pasang surut"],
+["Tata Surya, Rotasi & Revolusi","Pada gerhana Bulan sebagian, posisi yang benar adalah...","Matahari–Bumi–Bulan, sebagian Bulan di umbra Bumi|Matahari–Bulan–Bumi, sebagian Bumi di bayangan Bulan|Bumi–Matahari–Bulan, Bulan di antara Matahari dan Bumi"],
+["Tata Surya, Rotasi & Revolusi","Belahan Bumi utara menerima cahaya Matahari lebih banyak dan lebih lama. Musim di sana adalah...","Musim panas|Musim dingin|Musim gugur"],
+["Tata Surya, Rotasi & Revolusi","Perubahan musim di Bumi terjadi karena...","Sumbu Bumi miring dan Bumi berevolusi mengelilingi Matahari|Jarak Bumi dan Matahari berubah sangat jauh|Matahari mengelilingi Bumi setiap tahun"],
+["Tata Surya, Rotasi & Revolusi","Belahan utara musim panas, belahan selatan musim dingin. Penyebab utamanya...","Belahan utara menerima cahaya lebih tegak dan lebih lama|Matahari hanya menyinari belahan utara|Belahan selatan berhenti berotasi"],
+["Tata Surya, Rotasi & Revolusi","Sekitar 21 Juni, belahan Bumi utara siangnya lebih panjang karena...","Belahan utara miring menghadap Matahari|Belahan utara miring menjauhi Matahari|Bumi berhenti berevolusi"],
+["Sel & Sistem Organ Manusia","Pernyataan yang TIDAK sesuai dengan teori sel adalah...","Sel dapat terbentuk spontan dari benda mati|Semua makhluk hidup tersusun atas sel|Sel adalah unit struktural dan fungsional makhluk hidup"],
+["Sel & Sistem Organ Manusia","Sel tumbuhan: 1 lapisan tipis di dalam dinding, 2 lapisan kaku terluar, 3 organel oval hijau, 4 ruang besar di tengah. Namanya...","1 membran sel, 2 dinding sel, 3 kloroplas, 4 vakuola|1 dinding sel, 2 membran sel, 3 mitokondria, 4 inti sel|1 inti sel, 2 membran sel, 3 vakuola, 4 kloroplas"],
+["Sel & Sistem Organ Manusia","Perbedaan sel tumbuhan dan sel hewan yang tepat adalah...","Sel tumbuhan punya dinding sel dan kloroplas, sel hewan tidak|Sel hewan punya dinding sel dan kloroplas, sel tumbuhan tidak|Sel tumbuhan tidak punya membran sel"],
+["Sel & Sistem Organ Manusia","Urutan tingkat organisasi kehidupan pada sistem gerak yang tepat adalah...","Sel otot → jaringan otot → organ otot → sistem gerak|Jaringan otot → sel otot → sistem gerak → organ otot|Organ otot → sel otot → jaringan otot → sistem gerak"],
+["Sel & Sistem Organ Manusia","Pasangan tingkat organisasi dan contohnya yang tepat adalah...","Organ — jantung|Sel — jantung|Sistem organ — sel darah merah"],
+["Sel & Sistem Organ Manusia","Organ pencernaan yang menyerap sebagian besar sari makanan adalah...","Usus halus|Lambung|Usus besar"],
+["Sel & Sistem Organ Manusia","Tempat pertukaran gas O2 dan CO2 pada sistem pernapasan adalah...","Alveolus|Trakea|Rongga hidung"],
+["Sel & Sistem Organ Manusia","Bagian otak yang mengatur keseimbangan air tubuh (rasa haus dan hormon antidiuretik) adalah...","Hipotalamus|Otak kecil|Sumsum tulang belakang"],
+["Sel & Sistem Organ Manusia","Pembuluh darah yang membawa darah keluar jantung, dinding tebal elastis, dan denyutnya terasa adalah...","Arteri|Vena|Kapiler"],
+["Sel & Sistem Organ Manusia","Organ reproduksi perempuan penghasil sel telur adalah...","Ovarium|Rahim|Vagina"],
+["Sel & Sistem Organ Manusia","Upaya mencegah penularan penyakit pernapasan yang tepat adalah...","Memakai masker di tempat ramai dan menjaga ventilasi|Berbagi alat makan dengan orang yang batuk|Menutup semua jendela"],
+["Sel & Sistem Organ Manusia","Rina sering makan cepat saji, jarang makan sayur, kurang minum air putih. Upaya mencegah gangguan pencernaan...","Perbanyak makanan berserat dan minum air putih cukup|Kurangi aktivitas fisik dan minum soda|Hanya makan makanan manis"],
+["Sel & Sistem Organ Manusia","Salah satu cara menjaga kesehatan organ ekskresi adalah...","Minum air putih cukup dan tidak menahan buang air kecil|Minum obat tanpa aturan terus-menerus|Mengurangi minum agar jarang buang air kecil"],
+["Sel & Sistem Organ Manusia","Pasangan penyakit dan pencegahan yang tepat adalah...","Batu ginjal — minum air putih cukup|Influenza — berbagi masker dengan penderita|Diare — tidak mencuci tangan sebelum makan"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Zat adiktif halusinogen dapat menyebabkan seseorang...","Melihat atau mendengar sesuatu yang sebenarnya tidak ada|Melihat lebih tajam secara permanen|Tidak ada perubahan persepsi"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Dampak konsumsi zat aditif sintetis berlebihan yang paling tepat adalah...","Bisa memicu gangguan pencernaan atau reaksi pada orang sensitif, tergantung jenis dan dosis|Semua aditif sintetis pasti menyebabkan kanker setelah sekali konsumsi|Tidak berdampak apa pun"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Penyalahgunaan zat adiktif jangka panjang dapat menyebabkan...","Kerusakan paru-paru, gangguan jantung, dan kerusakan fungsi otak|Tubuh selalu sehat dan tidak mudah lelah|Kemampuan belajar meningkat permanen"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Dampak sosial penyalahgunaan zat adiktif pada remaja adalah...","Konflik keluarga, prestasi turun, pergaulan berisiko|Prestasi dan kedisiplinan meningkat|Kepedulian pada lingkungan sekolah meningkat"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Remaja penyalah guna zat adiktif membuang kemasan sembarangan. Dampak lingkungannya...","Sampah bertambah dan risiko pencemaran meningkat|Lingkungan menjadi lebih bersih|Keanekaragaman hayati bertambah"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Saat membeli makanan kemasan, tindakan gaya hidup sehat adalah...","Pilih yang gula, garam, lemaknya lebih rendah dan cek tanggal kedaluwarsa|Pilih berdasarkan warna kemasan|Pilih yang gula dan garamnya paling tinggi"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Teman mengajak mencoba rokok elektrik berzat adiktif. Tindakan paling tepat adalah...","Menolak tegas, jelaskan alasan, minta bantuan orang dewasa tepercaya|Mencoba sedikit agar tidak dianggap beda|Menerima agar diterima kelompok"],
+["Zat Aditif, Adiktif & Gaya Hidup Sehat","Kampanye pencegahan penyalahgunaan zat adiktif di sekolah efektif jika...","Menambah pengetahuan, keberanian menolak, dan mengurangi perilaku berisiko|Hanya memasang poster tanpa melihat perubahan perilaku|Dilakukan sekali tanpa melibatkan siswa dan guru"]
+];
+const BANK = BANK_RAW.map(r=>({t:r[0],q:r[1],o:r[2].split("|")}));
+
+/* ========== PENGATURAN GAME ========== */
+const DIFF={mudah:{n:3,v:45},sedang:{n:4,v:85},sulit:{n:5,v:140}}; // n = jumlah lebah, v = kecepatan
+const WAKTU=15, JML_SOAL=10;
+const PUJI=["Hebat! 🌟","Mantap sekali! 🎉","Pintar! Terus semangat! 👏","Keren, kamu paham materinya! 🐝","Tepat sekali! ⭐"];
+const SEMANGAT=["Ayo coba lagi, baca soal pelan-pelan 😊","Hampir! Kamu pasti bisa 💪","Tidak apa-apa, salah itu bagian dari belajar 🌱"];
+
+/* ========== UTILITAS ========== */
+const $=id=>document.getElementById(id);
+const stage=$("stage"),cam=$("cam"),beesEl=$("bees");
+let W=0,H=0;function rs(){W=stage.clientWidth;H=stage.clientHeight}addEventListener("resize",rs);rs();
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const G={diff:"sedang",mode:1,cam:true};
+let S=null,Q=null,bees=[],running=false;
+
+/* ========== AUDIO (Web Audio API) ========== */
+let AC,mg,mG,sG,bz,vol=.7,mM=false,mS=false,cust=null,mode=null,nt=0,stp=0;
+const MAJ=[0,2,4,7,9],MIN=[0,3,5,7,10]; // tangga nada pentatonik mayor & minor
+const M={ // pola melodi (indeks nada), bass, tempo
+ menu:{bpm:84,sc:MAJ,w:"triangle",d:.35,mel:[0,2,4,2,5,4,2,-1,4,5,7,5,4,2,0,-1],b:[0,3,4,3]},
+ play:{bpm:112,sc:MAJ,w:"triangle",d:.22,mel:[4,5,7,5,4,2,4,5,7,8,7,5,4,2,5,4],b:[0,3,4,3]},
+ danger:{bpm:158,sc:MIN,w:"sawtooth",d:.14,mel:[0,0,2,0,3,2,0,-1,0,0,2,0,4,3,2,0],b:[0,2,3,2],tick:1}
+};
+const mf=m=>440*Math.pow(2,(m-69)/12);
+function nota(f,t,d,w,v,dst){const o=AC.createOscillator(),g=AC.createGain();o.type=w;o.frequency.value=f;
+ g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+ o.connect(g);g.connect(dst);o.start(t);o.stop(t+d+.05)}
+function initA(){
+ if(AC){AC.resume();return}
+ AC=new(window.AudioContext||window.webkitAudioContext)();
+ mg=AC.createGain();mG=AC.createGain();sG=AC.createGain();mG.connect(mg);sG.connect(mg);mg.connect(AC.destination);
+ // dengung lebah halus (bzzz) sebagai lapisan latar
+ const o=AC.createOscillator(),f=AC.createBiquadFilter(),l=AC.createOscillator(),lg=AC.createGain();bz=AC.createGain();
+ o.type="sawtooth";o.frequency.value=125;f.type="lowpass";f.frequency.value=350;bz.gain.value=.02;
+ l.frequency.value=14;lg.gain.value=.012;l.connect(lg);lg.connect(bz.gain);o.connect(f);f.connect(bz);bz.connect(mG);o.start();l.start();
+ setInterval(tick,25);vl();
+ if(LAGU_LATAR_URL)setCust(LAGU_LATAR_URL);
 }
-function onHandResults(results){if(!cameraOn||!results.multiHandLandmarks||!results.multiHandLandmarks.length)return;let p=results.multiHandLandmarks[0][8];let arena=$("arena"),rect=arena.getBoundingClientRect();let x=(1-p.x)*rect.width,y=p.y*rect.height;let pointer=$("pointer");pointer.style.display="block";pointer.style.left=x+"px";pointer.style.top=y+"px";
- if(Date.now()-lastHit<500||answered)return;
- let bees=[...$("bees").children];for(let b of bees){let r=b.getBoundingClientRect(),ar=arena.getBoundingClientRect();let bx=r.left-ar.left,by=r.top-ar.top;if(x>bx-18&&x<bx+r.width+18&&y>by-18&&y<by+r.height+18){lastHit=Date.now();choose(+b.dataset.choice);break}}
+function vl(){if(!AC)return;mg.gain.value=vol;mG.gain.value=mM?0:1;sG.gain.value=mS?0:1;if(cust)cust.volume=mM?0:vol}
+function setCust(u){if(cust)cust.pause();cust=new Audio(u);cust.loop=true;bz.gain.value=0;vl();if(mode)cust.play().catch(()=>{})}
+function tick(){ // penjadwal nada (lookahead)
+ if(!AC||!mode||cust)return;const c=M[mode];
+ while(nt<AC.currentTime+.12){const p=stp%16,d=c.mel[p];
+  if(d>=0)nota(mf(60+c.sc[d%5]+12*((d/5)|0)),nt,c.d,c.w,.12,mG);
+  if(p%4==0)nota(mf(48+c.sc[c.b[p/4]]),nt,.4,"sine",.14,mG);
+  if(c.tick&&p%2)nota(1800,nt,.03,"square",.025,mG);
+  nt+=30/c.bpm;stp++}
 }
-function stopCamera(){cameraOn=false;if(camLoop)cancelAnimationFrame(camLoop);camLoop=null;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}if(hands){try{hands.close()}catch(e){}hands=null}$("video").srcObject=null;$("pointer").style.display="none";$("camLabel").textContent="Kamera belum aktif"}
-$("enableCam").onclick=startCamera;$("retryCam").onclick=startCamera;
-document.addEventListener("visibilitychange",()=>{if(document.hidden&&cameraOn)stopCamera()});
+function setMus(m){mode=m;stp=0;if(AC)nt=AC.currentTime+.05;
+ if(cust){if(m&&cust.paused)cust.play().catch(()=>{})}}
+function seq(n,s,w,v){if(!AC)return;n.forEach((m,i)=>nota(mf(m),AC.currentTime+i*s,.28,w,v,sG))}
+const sDing=()=>seq([84,88,91],.07,"sine",.25);        // jawaban benar: nada naik
+const sSalah=()=>seq([67,62,57],.14,"sine",.18);       // jawaban salah: nada turun lembut
+const sFan=()=>seq([72,76,79,84,79,84],.13,"triangle",.25); // fanfare
+const sSoft=()=>seq([60,64,67,64,67,72],.28,"sine",.18);    // melodi lembut penyemangat
+// tombol kontrol audio
+$("mm").onclick=()=>{mM=!mM;$("mm").textContent=mM?"🔇":"🎵";vl()};
+$("ms").onclick=()=>{mS=!mS;$("ms").textContent=mS?"🔕":"🔔";vl()};
+$("vo").oninput=e=>{vol=e.target.value/100;vl()};
+$("pl").onclick=()=>$("fi").click();
+$("fi").onchange=e=>{const f=e.target.files[0];if(!f)return;initA();setCust(URL.createObjectURL(f));if(!mode)setMus("menu")};
+// jeda musik saat tab tidak aktif
+document.addEventListener("visibilitychange",()=>{if(!AC)return;if(document.hidden){AC.suspend();cust&&cust.pause()}else{AC.resume();cust&&mode&&cust.play().catch(()=>{})}});
+// musik baru boleh mulai setelah interaksi pertama (aturan autoplay browser)
+document.addEventListener("pointerdown",()=>{if(!AC){initA();setMus("menu")}},{once:true});
+
+/* ========== KAMERA & DETEKSI GERAKAN ========== */
+const mx=$("mc").getContext("2d",{willReadFrequently:true});let pv=null,lm=0;
+async function startCam(){
+ try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:640,height:480},audio:false});
+  cam.srcObject=s;await cam.play();cam.style.display="block";return true}
+ catch(e){cam.style.display="none";return false}
+}
+function motion(now){ // gerakan tangan di atas lebah = menangkap
+ if(!G.cam||!cam.videoWidth||now-lm<80)return;lm=now;
+ mx.save();mx.scale(-1,1);mx.drawImage(cam,-64,0,64,48);mx.restore();
+ const d=mx.getImageData(0,0,64,48).data,n=new Uint8Array(3072),a=new Uint8Array(3072);
+ for(let i=0;i<3072;i++){const l=d[i*4]*.3+d[i*4+1]*.59+d[i*4+2]*.11;n[i]=l;if(pv&&Math.abs(l-pv[i])>35)a[i]=1}
+ pv=n;if(!Q||!Q.open)return;
+ for(const b of bees){
+  const cx=(b.x+75)/W*64,cy=(b.y+45)/H*48,rx=Math.max(2,55/W*64),ry=Math.max(2,45/H*48);let c=0,t=0;
+  for(let y=Math.max(0,cy-ry|0);y<Math.min(48,cy+ry);y++)for(let x=Math.max(0,cx-rx|0);x<Math.min(64,cx+rx);x++){t++;c+=a[y*64+x]}
+  b.m=t&&c/t>.3?b.m+1:0;
+  if(b.m>=2){b.m=0;hit(b)}
+ }
+}
+
+/* ========== LEBAH (SVG + CSS) ========== */
+const BEE='<svg viewBox="0 0 100 80"><ellipse class="wl" cx="42" cy="26" rx="13" ry="20" fill="#e3f6ff" stroke="#6bb6d6" stroke-width="2" opacity=".9"/><ellipse class="wl" cx="60" cy="26" rx="13" ry="20" fill="#e3f6ff" stroke="#6bb6d6" stroke-width="2" opacity=".9" style="animation-direction:alternate-reverse"/><ellipse cx="55" cy="50" rx="30" ry="20" fill="#ffc928" stroke="#3b2a1a" stroke-width="3"/><ellipse cx="48" cy="50" rx="5" ry="18" fill="#3b2a1a"/><ellipse cx="63" cy="50" rx="5" ry="16" fill="#3b2a1a"/><path d="M85 50l12 3-12 4z" fill="#3b2a1a"/><circle cx="24" cy="48" r="14" fill="#ffc928" stroke="#3b2a1a" stroke-width="3"/><circle cx="20" cy="45" r="3.5" fill="#3b2a1a"/><path d="M17 54q5 4 10 0" stroke="#3b2a1a" stroke-width="2" fill="none"/><path d="M20 35q-4-10-9-12M28 35q2-9 8-11" stroke="#3b2a1a" stroke-width="2" fill="none"/></svg>';
+function spawn(txt,ok){
+ const el=document.createElement("div");el.className="bee";
+ el.innerHTML='<div class="in"><div class="sv">'+BEE+'</div><div class="lb"></div></div>';
+ el.querySelector(".lb").textContent=txt;beesEl.appendChild(el);
+ const v=DIFF[G.diff].v,b={el,ok,x:rnd(0,Math.max(1,W-150)),y:rnd(190,Math.max(200,H-200)),vx:(Math.random()<.5?-1:1)*v*rnd(.6,1.2),ph:rnd(0,6),tc:rnd(1,3),cd:0,m:0,f:0,sv:el.querySelector(".sv")};
+ el.addEventListener("pointerdown",e=>{e.preventDefault();hit(b)});bees.push(b);
+}
+function side(b){return S.np==2&&b.x+75>W/2?1:0}
+function upd(dt){
+ const v=DIFF[G.diff].v;
+ for(const b of bees){
+  b.tc-=dt;if(b.tc<0){b.vx=(Math.random()<.5?-1:1)*v*rnd(.6,1.2);b.tc=rnd(1.5,3.5)}
+  b.x+=b.vx*dt;if(b.x<0){b.x=0;b.vx=Math.abs(b.vx)}if(b.x>W-150){b.x=W-150;b.vx=-Math.abs(b.vx)}
+  b.ph+=dt*2;b.y+=Math.sin(b.ph*.7)*v*.25*dt;b.y=Math.min(Math.max(b.y,170),Math.max(180,H-190));
+  const yy=b.y+Math.sin(b.ph)*30;b.el.style.transform="translate("+b.x+"px,"+yy+"px)";b.yy=yy;
+  const f=b.vx>0?-1:1;if(f!==b.f){b.f=f;b.sv.style.transform="scaleX("+f+")"}
+ }
+}
+function burst(x,y){ // animasi bintang
+ for(let i=0;i<12;i++){const s=document.createElement("div");s.textContent="⭐";
+  s.style.cssText="position:absolute;left:"+x+"px;top:"+y+"px;font-size:28px;pointer-events:none;z-index:3";stage.appendChild(s);
+  const a=i/12*6.28,r=rnd(70,150);
+  s.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:"translate("+Math.cos(a)*r+"px,"+Math.sin(a)*r+"px) scale(.3) rotate(240deg)",opacity:0}],{duration:900}).onfinish=()=>s.remove()}
+}
+let tt;function toast(t,ms){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("on"),ms||1400)}
+
+/* ========== ALUR PERMAINAN ========== */
+const hearts=n=>"❤️".repeat(Math.max(0,n))+"🤍".repeat(3-Math.max(0,n));
+function hudUpd(){
+ $("h1").innerHTML=(S.np==2?"🔵 P1":"🙋 Skor")+" ⭐"+S.sc[0]+"<br>"+hearts(S.lv[0]);
+ $("h2").innerHTML="🟠 P2 ⭐"+S.sc[1]+"<br>"+hearts(S.lv[1]);$("h2").style.visibility=S.np==2?"visible":"hidden";
+ const low=S.lv.slice(0,S.np).some(l=>l==1);if(running)setMus(low?"danger":"play");
+}
+function newGame(){
+ S={q:shuf(BANK).slice(0,JML_SOAL),i:-1,sc:[0,0],lv:[3,3],ok:[0,0],salah:0,list:[],np:G.mode};
+ $("start").classList.add("hide");$("end").classList.add("hide");$("hud").classList.remove("hide");
+ $("mid").style.display=S.np==2?"block":"none";running=true;setMus("play");nextQ();
+}
+function nextQ(){
+ if(!running)return;S.i++;if(S.i>=JML_SOAL)return fin();
+ beesEl.innerHTML="";bees=[];const d=S.q[S.i];
+ Q={d,t:WAKTU,open:true,miss:false};
+ $("qn").textContent="Soal "+(S.i+1)+" dari "+JML_SOAL+" • "+d.t;$("qt").textContent=d.q;hudUpd();
+ const n=DIFF[G.diff].n,salah=shuf(d.o.slice(1)).slice(0,n-1);
+ shuf([d.o[0]].concat(salah)).forEach(o=>spawn(o,o===d.o[0]));
+}
+function hit(b){
+ if(!Q||!Q.open||!running||b.cd>performance.now())return;
+ const p=side(b);
+ if(S.lv[p]<=0)return;
+ if(b.ok){ // jawaban benar
+  Q.open=false;S.ok[p]++;S.sc[p]+=10+Math.ceil(Q.t);sDing();burst(b.x+75,b.yy+40);
+  toast(PUJI[Math.floor(Math.random()*PUJI.length)]+(S.np==2?" (Pemain "+(p+1)+")":""));
+  bees.forEach(x=>{if(x!==b)x.el.classList.add("out")});b.el.classList.add("glow");
+  if(Q.miss)S.list.push(Q.d);hudUpd();setTimeout(nextQ,1500);
+ }else{ // jawaban salah: nyawa berkurang, lebah bergetar
+  S.lv[p]--;S.salah++;if(!Q.miss){Q.miss=true}b.cd=performance.now()+1300;sSalah();
+  b.el.classList.add("shake");setTimeout(()=>b.el.classList.remove("shake"),700);
+  toast(SEMANGAT[Math.floor(Math.random()*SEMANGAT.length)]);hudUpd();
+  if(S.lv[p]<=0){Q.open=false;if(!S.list.includes(Q.d))S.list.push(Q.d);setTimeout(fin,1000)}
+ }
+}
+function timeout(){
+ Q.open=false;S.salah++;if(!S.list.includes(Q.d))S.list.push(Q.d);sSalah();
+ bees.forEach(b=>b.el.classList.add(b.ok?"glow":"out"));
+ toast("⏰ Waktu habis! Jawabannya: "+Q.d.o[0],1800);setTimeout(nextQ,2000);
+}
+function fin(){
+ running=false;Q=null;$("hud").classList.add("hide");beesEl.innerHTML="";bees=[];
+ const tot=S.ok[0]+S.ok[1],best=Math.max(S.ok[0],S.ok[1]);
+ let head,stars;
+ if(S.np==2){const a=S.sc[0],b=S.sc[1];
+  head=S.lv[0]<=0?"🟠 Pemain 2 menang!":S.lv[1]<=0?"🔵 Pemain 1 menang!":a>b?"🔵 Pemain 1 menang!":b>a?"🟠 Pemain 2 menang!":"🤝 Seri!";
+ }else head=S.lv[0]<=0?"Ayo semangat, coba lagi!":"Kerja bagus!";
+ stars=best>=8?3:best>=5?2:1;const win=best>=5&&S.lv[0]>0&&(S.np==2||S.lv[0]>0);
+ win?(setMus(null),sFan()):(setMus(null),sSoft());
+ setTimeout(()=>setMus("menu"),3200);
+ const g={};S.list.forEach(d=>{(g[d.t]=g[d.t]||[]).push(d)});
+ let rv=S.list.length?"<b>📚 Materi yang masih perlu diulang:</b>":"<b>🎉 Hebat! Tidak ada materi yang keliru.</b>";
+ for(const t in g)rv+="<br><b>• "+t+"</b>"+g[t].map(d=>"<br>&nbsp;&nbsp;"+esc(d.q)+" → <b>"+esc(d.o[0])+"</b>").join("");
+ const sc=S.np==2?"🔵 "+S.sc[0]+" &nbsp; 🟠 "+S.sc[1]:"⭐ Skor: "+S.sc[0];
+ $("end").innerHTML="<h2>"+head+"</h2><div class='st'>"+"⭐".repeat(stars)+"☆".repeat(3-stars)+"</div><p style='font-size:1.5em;font-weight:800'>"+sc+"</p><p>✅ Benar: "+tot+" &nbsp; ❌ Salah: "+S.salah+"</p><p>"+(stars==3?"Luar biasa, kamu jagoan IPA! 🏆":stars==2?"Bagus! Sedikit lagi sempurna 🌼":"Setiap percobaan membuatmu makin pintar 🌱")+"</p><div class='rv'>"+rv+"</div><button class='big' id='again'>🔄 Main Lagi</button>";
+ $("end").classList.remove("hide");$("again").onclick=()=>{$("end").classList.add("hide");$("start").classList.remove("hide");setMus("menu")};
+}
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+
+/* ========== LOOP ANIMASI ========== */
+let last=0;
+function loop(ts){
+ const dt=Math.min((ts-last)/1000||0,.1);last=ts;
+ if(running&&Q){
+  upd(dt);motion(ts);
+  if(Q&&Q.open){Q.t-=dt;$("tf").style.width=Math.max(0,Q.t/WAKTU*100)+"%";$("tf").style.background=Q.t<5?"#e53935":"#43a047";if(Q.t<=0)timeout()}
+ }else if(bees.length)upd(dt);
+ requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ========== LAYAR AWAL ========== */
+function grp(id,fn){$(id).onclick=e=>{const b=e.target.closest("button");if(!b)return;[...$(id).children].forEach(x=>x.classList.remove("on"));b.classList.add("on");fn(b.dataset.v)}}
+grp("dg",v=>G.diff=v);grp("mg",v=>G.mode=+v);
+$("cb").onclick=()=>{G.cam=!G.cam;$("cb").classList.toggle("on",G.cam);$("cb").textContent="📷 Kamera: "+(G.cam?"Nyala":"Mati")};
+$("go").onclick=async()=>{
+ initA();
+ if(G.cam){const ok=await startCam();if(!ok){G.cam=false;toast("Kamera tidak tersedia, bermain dengan klik/sentuhan ya 😊",2200)}}
+ else cam.style.display="none";
+ newGame();
+};
 </script>
-</body></html>
+</body>
+</html>
